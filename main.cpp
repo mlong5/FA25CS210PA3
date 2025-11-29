@@ -117,9 +117,44 @@ void printPath(pair<int,int> exitcell,
 // STUDENTS IMPLEMENT DFS HERE
 // Add arguments, return type, and logic
 // ----------------------------------------------------------
-// bool dfs(……) {
-//     // Your code here
-// }
+
+
+//r = parent_r after every loop
+//loops are shorter than you think if we say stop at
+    bool dfs(int r, int c,
+             const vector<vector<int>>& maze,
+             vector<vector<bool>>& visited,
+             vector<vector<int>>& parent_r,
+             vector<vector<int>>& parent_c,
+             int exit_r, int exit_c) {
+     // Your code here
+        int i = 0;
+        while(r != exit_r && c != exit_c) {
+            if(maze[r][c] == maze[exit_r][exit_c]) {
+                return true;
+            }
+            visited[r][c] = true;
+            if(maze[r][c] == 1) {
+                r = r - dr[i]
+                c = c - dc[i]
+                dfs(
+            }
+            if(visited[r + dr[i]][c + dc[i]] || maze[r + dr[i]][c + dc[i]] == 1) {
+                i++;
+                if(i == 4) {
+                    return false;
+                }
+            }
+            r = r + dr[i]
+            c = c + dc[i]
+        }
+        return dfs();
+
+
+
+
+
+    }
 
 
 // ----------------------------------------------------------
@@ -153,7 +188,9 @@ int main() {
     // Students must use these
     vector<vector<bool>> visited(N, vector<bool>(M, false));
     vector<vector<int>> parent_r(N, vector<int>(M, -1));
+    //row parent
     vector<vector<int>> parent_c(N, vector<int>(M, -1));
+    //column parent
 
     // ------------------------------------------------------
     // STUDENT WORK:
