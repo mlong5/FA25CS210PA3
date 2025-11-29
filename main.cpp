@@ -120,41 +120,64 @@ void printPath(pair<int,int> exitcell,
 
 
 //r = parent_r after every loop
-//loops are shorter than you think if we say stop at
+//loops are shorter than you think if we say stop at when hit wall
     bool dfs(int r, int c,
              const vector<vector<int>>& maze,
              vector<vector<bool>>& visited,
              vector<vector<int>>& parent_r,
              vector<vector<int>>& parent_c,
-             int exit_r, int exit_c) {
-     // Your code here
-        int i = 0;
-        while(r != exit_r && c != exit_c) {
-            if(maze[r][c] == maze[exit_r][exit_c]) {
-                return true;
-            }
-            visited[r][c] = true;
-            if(maze[r][c] == 1) {
-                r = r - dr[i]
-                c = c - dc[i]
-                dfs(
-            }
-            if(visited[r + dr[i]][c + dc[i]] || maze[r + dr[i]][c + dc[i]] == 1) {
-                i++;
-                if(i == 4) {
-                    return false;
-                }
-            }
-            r = r + dr[i]
-            c = c + dc[i]
-        }
-        return dfs();
+             int exit_r, int exit_c)
+{
+    // Your code here
 
 
-
-
-
+    if (r > exit_r || c > exit_c) {
+        return false;
     }
+    /*parent_r[r][c] = r;
+    parent_c[r][c] = c;*/
+    int i = 0;
+    if (maze[r][c] == 1) { //works as it will recurse and then check for out of bounds
+        r = parent_r[r][c];
+        c = parent_c[r][c];
+        i++;
+        r = r + dr[i];
+        c = c + dc[i];
+        dfs(r,c,maze,visited,parent_r,parent_c,exit_r,exit_c);
+    }
+
+    if(maze[r][c] == maze[exit_r][exit_c]) {
+        return true;
+    }
+
+    visited[r][c] = true;
+
+    /*int i = 0;
+    if ((r + dr[i] <= exit_r) && (c + dc[i] <= exit_c)) {
+        if (visited[r + dr[i]][c + dc[i]]) {
+            i++;
+            if (i == 4) {
+                return false;
+            }
+        } else {
+            r = r + dr[i];
+            c = c + dc[i];
+            if (maze[r][c] == 1) {
+                r = r - dr[i];
+                c = c - dc[i];
+            }
+            return dfs()
+        }
+    } else {
+        return false;
+    }*/
+}
+
+
+
+
+
+
 
 
 // ----------------------------------------------------------
@@ -188,9 +211,10 @@ int main() {
     // Students must use these
     vector<vector<bool>> visited(N, vector<bool>(M, false));
     vector<vector<int>> parent_r(N, vector<int>(M, -1));
-    //row parent
+    //row parent x coordinate
     vector<vector<int>> parent_c(N, vector<int>(M, -1));
-    //column parent
+    //column parent y coordinate, second part makes a row of vectors of -1
+    //can use to note position tho
 
     // ------------------------------------------------------
     // STUDENT WORK:
