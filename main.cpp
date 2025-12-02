@@ -131,26 +131,44 @@ void printPath(pair<int,int> exitcell,
     // Your code here
 
 
-    if (r > exit_r || c > exit_c) {
+    if (r > maze.size() || c > maze[0].size()) {
         return false;
     }
-    /*parent_r[r][c] = r;
-    parent_c[r][c] = c;*/
-    int i = 0;
-    if (maze[r][c] == 1) { //works as it will recurse and then check for out of bounds
-        r = parent_r[r][c];
-        c = parent_c[r][c];
-        i++;
-        r = r + dr[i];
-        c = c + dc[i];
-        dfs(r,c,maze,visited,parent_r,parent_c,exit_r,exit_c);
+    if (r < 0 || c < 0) {
+        return false;
     }
 
-    if(maze[r][c] == maze[exit_r][exit_c]) {
+    if(r == exit_r && c == exit_c) {
         return true;
     }
 
     visited[r][c] = true;
+
+    int i = 0;
+    while (i < 4) { //neighbors check
+        int newr = r + dr[i];
+        int newc = c + dc[i];
+
+        if (newr >= maze.size() || newc >= maze[0].size()) {
+            //out of bounds check inside as i changes
+
+            continue;
+        }
+        if (newr < 0 || newc < 0) {
+
+            continue;
+        }
+        if (maze[newr][newc] == 1 || visited[newr][newc]) {
+
+            continue;
+        }
+        i++;
+
+        //return dfs?
+
+    }
+
+
 
     /*int i = 0;
     if ((r + dr[i] <= exit_r) && (c + dc[i] <= exit_c)) {
