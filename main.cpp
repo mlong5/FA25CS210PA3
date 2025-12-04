@@ -151,20 +151,23 @@ void printPath(pair<int,int> exitcell,
 
         if (newr >= maze.size() || newc >= maze[0].size()) {
             //out of bounds check inside as i changes
-
+            i++;
             continue;
         }
         if (newr < 0 || newc < 0) {
-
+            i++;
             continue;
         }
         if (maze[newr][newc] == 1 || visited[newr][newc]) {
-
+            i++;
             continue;
         }
-        i++;
+        if (dfs(newr,newc,maze,visited,parent_r,parent_c,exit_r,exit_c)) {
+            //if statement as some paths are false but one true path would lead to actual path
+            return true;
+        }
 
-        //return dfs?
+        return false;
 
     }
 
