@@ -119,8 +119,7 @@ void printPath(pair<int,int> exitcell,
 // ----------------------------------------------------------
 
 
-//r = parent_r after every loop
-//loops are shorter than you think if we say stop at when hit wall
+
     bool dfs(int r, int c,
              const vector<vector<int>>& maze,
              vector<vector<bool>>& visited,
@@ -141,7 +140,7 @@ void printPath(pair<int,int> exitcell,
     if(r == exit_r && c == exit_c) {
         return true;
     }
-
+    //immediately mark current node as visited if not the exit node
     visited[r][c] = true;
 
     int i = 0;
@@ -159,39 +158,25 @@ void printPath(pair<int,int> exitcell,
             continue;
         }
         if (maze[newr][newc] == 1 || visited[newr][newc]) {
+            //if hit a wall or already visited
             i++;
             continue;
         }
+        //update parent requires 2d array for each coordinate parent
+        //updated as each r and c will now have the previous path starting node
+        //on which to recurse to
+        parent_r[newr][newc] = r;
+        parent_c[newr][newc] = c;
+
         if (dfs(newr,newc,maze,visited,parent_r,parent_c,exit_r,exit_c)) {
             //if statement as some paths are false but one true path would lead to actual path
+            //need that to be checked instead of just returned
             return true;
         }
 
-        return false;
-
     }
-
-
-
-    /*int i = 0;
-    if ((r + dr[i] <= exit_r) && (c + dc[i] <= exit_c)) {
-        if (visited[r + dr[i]][c + dc[i]]) {
-            i++;
-            if (i == 4) {
-                return false;
-            }
-        } else {
-            r = r + dr[i];
-            c = c + dc[i];
-            if (maze[r][c] == 1) {
-                r = r - dr[i];
-                c = c - dc[i];
-            }
-            return dfs()
-        }
-    } else {
-        return false;
-    }*/
+    //after all recursive calls if the final path returns false then return false
+    return false;
 }
 
 
